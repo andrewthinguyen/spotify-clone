@@ -1,6 +1,6 @@
 import "./features/tooltip.js";
 import "./features/playlist.js";
-import { startLogin } from "./features/Login.js";
+import { startLogin } from "./features/login.js";
 import { startRegister } from "./features/signUp.js";
 import { handleLogout } from "./features/logout.js";
 

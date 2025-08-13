@@ -1,5 +1,6 @@
 import { showToast } from "../utils/toast.js";
 import httpRequest from "../utils/httpRequest.js";
+import { endpoints } from "../utils/endpoints.js";
 
 // Hàm kiểm tra định dạng email
 function isValidEmail(email) {
@@ -123,7 +124,7 @@ export function startRegister() {
       try {
         // Gọi API đăng ký
         const { access_token, user } = await httpRequest.post(
-          "auth/register",
+          endpoints.authRegister,
           credentials
         );
 

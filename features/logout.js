@@ -1,5 +1,6 @@
 import { showToast } from "../utils/toast.js";
 import httpRequest from "../utils/httpRequest.js";
+import { endpoints } from "../utils/endpoints.js";
 
 /**
  * Xử lý đăng xuất người dùng
@@ -16,7 +17,7 @@ export function handleLogout() {
 
   // Gọi API đăng xuất
   httpRequest
-    .post("auth/logout", {})
+    .post(endpoints.authLogout, {})
     .then(() => {
       // Thành công
       showToast("Đăng xuất thành công!", "success");
