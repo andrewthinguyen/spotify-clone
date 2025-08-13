@@ -1,5 +1,9 @@
 import "./features/tooltip.js";
+import "./features/playlist.js";
+import { startLogin } from "./features/Login.js";
 import { startRegister } from "./features/signUp.js";
+import { handleLogout } from "./features/logout.js";
+
 // Auth Modal Functionality
 document.addEventListener("DOMContentLoaded", function () {
   // Get DOM elements
@@ -77,6 +81,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Thiết lập xử lý đăng ký----------------------------
   startRegister();
+  // Thiết lập xử lý đăng nhập----------------------------
+  startLogin();
 });
 
 // User Menu Dropdown Functionality
@@ -107,9 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Handle logout button click
   logoutBtn.addEventListener("click", function () {
-    // Close dropdown first
-    userDropdown.classList.remove("show");
-
+    handleLogout();
     console.log("Logout clicked");
     // TODO: Students will implement logout logic here
   });

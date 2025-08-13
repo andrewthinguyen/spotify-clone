@@ -1,5 +1,6 @@
 import { showToast } from "../utils/toast.js";
 import httpRequest from "../utils/httpRequest.js";
+import { endpoints } from "../utils/endpoints.js";
 
 // Hàm kiểm tra định dạng email
 function isValidEmail(email) {
@@ -7,35 +8,21 @@ function isValidEmail(email) {
   return emailPattern.test(email);
 }
 
-// Hàm kiểm tra mật khẩu
-function validatePassword(pw) {
-  if (pw.length < 8) return "Mật khẩu phải có ít nhất 8 ký tự";
-  if (!/[A-Z]/.test(pw)) return "Mật khẩu phải có ít nhất một chữ hoa";
-  if (!/[a-z]/.test(pw)) return "Mật khẩu phải có ít nhất một chữ thường";
-  if (!/\d/.test(pw)) return "Mật khẩu phải có ít nhất một chữ số";
-  if (!/[^A-Za-z0-9]/.test(pw))
-    return "Mật khẩu phải có ít nhất một ký tự đặc biệt";
-  if (/\s/.test(pw)) return "Mật khẩu không được chứa khoảng trắng";
-  return "";
-}
-
 // Hiển thị lỗi email
-function showEmailError(message) {
-  const emailInput = document.querySelector("#signupEmail");
+function showLoginEmailError(message) {
+  const emailInput = document.querySelector("#loginEmail");
   const emailGroup = emailInput.closest(".form-group");
   const emailErrorBox = emailGroup.querySelector(".error-message");
-
   const emailErrorText = emailGroup.querySelector(".error-message span");
 
   emailGroup.classList.add("invalid");
   emailErrorBox.classList.add("show");
   emailErrorText.textContent = message;
-  //   emailInput.focus();
 }
 
 // Hiển thị lỗi password
-function showPasswordError(message) {
-  const passwordInput = document.querySelector("#signupPassword");
+function showLoginPasswordError(message) {
+  const passwordInput = document.querySelector("#loginPassword");
   const passwordGroup = passwordInput.closest(".form-group");
   const passwordErrorBox = passwordGroup.querySelector(".error-message");
   const passwordErrorText = passwordGroup.querySelector(".error-message span");
@@ -65,26 +52,25 @@ function updateCurrentUser(user) {
   }
 
   // Cập nhật email
-
   userEmail.textContent = user.email;
 }
 
-// Thiết lập sự kiện cho form đăng ký
-export function startRegister() {
-  const signupForm = document.getElementById("signupForm");
-  if (!signupForm) return;
+// Thiết lập sự kiện cho form đăng nhập
+export function startLogin() {
+  const loginForm = document.getElementById("loginForm");
+  if (!loginForm) return;
 
   // Thiết lập sự kiện blur cho email để validate định dạng
-  const emailInput = document.querySelector("#signupEmail");
+  const emailInput = document.querySelector("#loginEmail");
   emailInput?.addEventListener("blur", function () {
     const email = this.value.trim();
 
     if (email && !isValidEmail(email)) {
-      showEmailError("Email không hợp lệ, vui lòng nhập lại.");
+      showLoginEmailError("Email không hợp lệ, vui lòng nhập lại.");
     }
   });
 
-  // Ẩn lỗi khi focus vào input
+  // Ẩn lỗi khi focus vào input email
   emailInput?.addEventListener("focus", function () {
     const emailGroup = this.closest(".form-group");
     const emailErrorBox = emailGroup.querySelector(".error-message");
@@ -93,37 +79,51 @@ export function startRegister() {
     emailErrorBox.classList.remove("show");
   });
 
+  // Ẩn lỗi khi focus vào input password
+  const passwordInput = document.querySelector("#loginPassword");
+  passwordInput?.addEventListener("focus", function () {
+    const passwordGroup = this.closest(".form-group");
+    const passwordErrorBox = passwordGroup.querySelector(".error-message");
+
+    passwordGroup.classList.remove("invalid");
+    passwordErrorBox.classList.remove("show");
+  });
+
   // Xử lý sự kiện submit form
-  signupForm
+  loginForm
     .querySelector(".auth-form-content")
     ?.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const emailValue = document.querySelector("#signupEmail").value.trim();
-      const password = document.querySelector("#signupPassword").value;
+      const emailValue = document.querySelector("#loginEmail").value.trim();
+      const password = document.querySelector("#loginPassword").value;
 
       // Validate email
-      if (!emailValue || !isValidEmail(emailValue)) {
-        showEmailError("Email không hợp lệ, vui lòng nhập lại.");
+      if (!emailValue) {
+        showLoginEmailError("Vui lòng nhập email.");
+        return;
+      }
+
+      if (!isValidEmail(emailValue)) {
+        showLoginEmailError("Email không hợp lệ, vui lòng nhập lại.");
         return;
       }
 
       // Validate password
-      const passwordError = validatePassword(password);
-      if (passwordError) {
-        showPasswordError(passwordError);
+      if (!password) {
+        showLoginPasswordError("Vui lòng nhập mật khẩu.");
         return;
       }
 
-      // Dữ liệu đăng ký
+      // Dữ liệu đăng nhập
       const credentials = {
         email: emailValue,
         password,
       };
 
       try {
-        // Gọi API đăng ký
+        // Gọi API đăng nhập
         const { access_token, user } = await httpRequest.post(
-          "auth/register",
+          endpoints.authLogin,
           credentials
         );
 
@@ -137,21 +137,22 @@ export function startRegister() {
         document.body.style.overflow = "auto"; // Phục hồi cuộn trang
 
         // Hiển thị thông báo thành công
-        showToast("Đăng ký thành công! Chào mừng đến với Spotify.", "success");
+        showToast("Đăng nhập thành công! Chào mừng trở lại.", "success");
 
         // Cập nhật UI - tự động đăng nhập
         setTimeout(() => {
           updateCurrentUser(user);
         }, 500);
       } catch (error) {
-        console.error("Registration error:", error);
+        console.error("Login error:", error);
+
         // Kiểm tra loại lỗi từ API
-        if (error?.response?.error?.code === "EMAIL_EXISTS") {
-          showEmailError(
-            "Email này đã được đăng ký, vui lòng sử dụng email khác."
-          );
+        if (error?.response?.error?.code === "INVALID_CREDENTIALS") {
+          showLoginEmailError("Email hoặc mật khẩu không chính xác.");
+        } else if (error?.response?.error?.code === "USER_NOT_FOUND") {
+          showLoginEmailError("Tài khoản không tồn tại.");
         } else {
-          showEmailError("Đã xảy ra lỗi khi đăng ký, vui lòng thử lại sau.");
+          showLoginEmailError("Đăng nhập thất bại. Vui lòng thử lại sau.");
         }
       }
     });
