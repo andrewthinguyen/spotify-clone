@@ -1,0 +1,42 @@
+/* Toast styles */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  background-color: #1db954; /* Spotify green */
+  color: white;
+  padding: 12px 25px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  min-width: 280px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+}
+
+.toast.show {
+  transform: translateX(0);
+}
+
+.toast-icon {
+  margin-right: 12px;
+  font-size: 18px;
+}
+
+.toast-content {
+  flex-grow: 1;
+}
+
+.toast-error {
+  background-color: #e91429; /* Spotify red */
+}
+
+.toast-info {
+  background-color: #2e77d0; /* Spotify blue */
+}
