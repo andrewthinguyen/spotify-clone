@@ -1,8 +1,9 @@
 import "./features/tooltip.js";
-import "./features/playlist.js";
+import "./features/playListsAndArtists.js";
 import { startLogin } from "./features/login.js";
 import { startRegister } from "./features/signUp.js";
 import { handleLogout } from "./features/logout.js";
+import { handleArtist } from "./features/playListsAndArtists.js";
 
 // Auth Modal Functionality
 document.addEventListener("DOMContentLoaded", function () {
@@ -48,8 +49,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Close modal function
   function closeModal() {
+    // authModal.classList.add("fade-out");
     authModal.classList.remove("show");
     document.body.style.overflow = "auto"; // Restore scrolling
+    // setTimeout(() => {
+    //   authModal.classList.remove("show");
+    //   document.body.style.overflow = "auto"; // Cho phép cuộn lại
+    // }, 300); // Thời gian khớp với thời lượng animation (0.3s)
   }
 
   // Close modal when clicking close button
@@ -83,6 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
   startRegister();
   // Thiết lập xử lý đăng nhập----------------------------
   startLogin();
+  //Xử lý click vào nghệ sĩ thì hiện ra thông tin
+  handleArtist();
 });
 
 // User Menu Dropdown Functionality
