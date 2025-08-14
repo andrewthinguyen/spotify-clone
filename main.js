@@ -8,6 +8,10 @@ import {
   handleTracks,
   handlePlaylist,
 } from "./features/playListsAndArtists.js";
+import {
+  handlePlaylistFollowToggle,
+  refreshLibraryContent,
+} from "./features/flAndUnflPlaylist.js";
 
 // Auth Modal Functionality
 document.addEventListener("DOMContentLoaded", function () {
@@ -102,6 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
   handleArtist();
   handleTracks();
   handlePlaylist();
+  refreshLibraryContent();
+  handlePlaylistFollowToggle();
 });
 
 // User Menu Dropdown Functionality

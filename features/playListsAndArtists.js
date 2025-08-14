@@ -2,6 +2,7 @@ import httpRequest from "../utils/httpRequest.js";
 import { endpoints } from "../utils/endpoints.js";
 import { showToast } from "../utils/toast.js";
 import { formatNumber, formatDuration } from "../utils/formatNumber.js";
+import { escapeHTML, pickImage } from "../utils/helpers.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
@@ -16,31 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log(error);
   }
 });
-// xử lý xss
-function escapeHTML(str = "") {
-  return String(str)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
 
-//xử lý để nếu đường dẫn ảnh không phải tới f8team thì coi như false, tránh bị xấu giao diện.
-function pickImage(url) {
-  if (!url) return "./placeholder.svg";
-  const u = new URL(url);
-  return u.origin !== "https://example.com" ? url : "./placeholder.svg";
-  // try {
-  //   // new URL sẽ throw nếu url không hợp lệ/
-  //   const u = new URL(url);
-  //   return u.origin !== "https://example.com/playlist-cover.jpg"
-  //     ? url
-  //     : "./placeholder.svg";
-  // } catch {
-  //   return "./placeholder.svg";
-  // }
-}
 // hàm rendertracks
 function renderTracks(tracks) {
   const hitsGrid = document.querySelector(".hits-grid");
@@ -453,10 +430,7 @@ export function handlePlaylist() {
   document.addEventListener("click", (e) => {
     const card = e.target.closest(".playlist-card");
     if (!card) return;
-
     const playlistId = card.dataset.id;
-    console.log(playlistId);
-
     if (playlistId) loadPlaylistDetail(playlistId);
   });
 }
@@ -518,6 +492,16 @@ function showPlaylistDetail(playlist) {
 
     <section class="artist-controls">
       <button class="play-btn-large"><i class="fas fa-play"></i></button>
+      <button
+      class="playlist-follow-btn ${
+        playlist?.is_following ? "is-following" : ""
+      }"
+      data-id="${escapeHTML(playlist.id)}"
+      data-following="${playlist?.is_following ? "1" : "0"}"
+      aria-pressed="${playlist?.is_following ? "true" : "false"}"
+    >
+      ${playlist?.is_following ? "Unfollow" : "Follow"}
+    </button>
     </section>
 
     <section class="popular-section" id="playlist-tracks">

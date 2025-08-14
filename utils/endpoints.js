@@ -15,6 +15,12 @@ const endpoints = {
   trackById: (id) => `tracks/${encodeURIComponent(id)}`,
   trendingTracks: (limit = 5, offset = 0) =>
     `tracks/trending?limit=${limit}&offset=${offset}`,
+
+  followPlaylist: (id) => `playlists/${encodeURIComponent(id)}/follow`,
+  unfollowPlaylist: (id) => `playlists/${encodeURIComponent(id)}/follow`,
+
+  followedPlaylists: (limit = 20, offset = 0) =>
+    `me/playlists/followed?limit=${limit}&offset=${offset}`,
 };
 
 export { endpoints };
