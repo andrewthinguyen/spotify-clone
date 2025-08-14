@@ -7,6 +7,9 @@ const endpoints = {
 
   artistById: (id) => `artists/${encodeURIComponent(id)}`,
   popularTracks: (id) => `artists/${encodeURIComponent(id)}/tracks/popular`,
+
+  playlistById: (id) => `playlists/${encodeURIComponent(id)}`,
+  playlistTracks: (id) => `playlists/${encodeURIComponent(id)}/tracks`,
 };
 
 export { endpoints };

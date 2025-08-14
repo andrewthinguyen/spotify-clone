@@ -3,7 +3,10 @@ import "./features/playListsAndArtists.js";
 import { startLogin } from "./features/login.js";
 import { startRegister } from "./features/signUp.js";
 import { handleLogout } from "./features/logout.js";
-import { handleArtist } from "./features/playListsAndArtists.js";
+import {
+  handleArtist,
+  handlePlaylist,
+} from "./features/playListsAndArtists.js";
 
 // Auth Modal Functionality
 document.addEventListener("DOMContentLoaded", function () {
@@ -16,7 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
   const showLoginBtn = document.getElementById("showLogin");
   const showSignupBtn = document.getElementById("showSignup");
+  const homeBtn = document.querySelector(".home-btn");
 
+  //go to homepage
+  homeBtn?.addEventListener("click", () => {
+    window.location.href = "/";
+  });
   // Function to show signup form
   function showSignupForm() {
     signupForm.style.display = "block";
@@ -91,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
   startLogin();
   //Xử lý click vào nghệ sĩ thì hiện ra thông tin
   handleArtist();
+  handlePlaylist();
 });
 
 // User Menu Dropdown Functionality
