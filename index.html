@@ -136,8 +136,8 @@
           </div>
           <div class="header-actions">
             <div class="auth-buttons">
-              <button class="auth-btn signup-btn">Sign up</button>
-              <button class="auth-btn login-btn">Log in</button>
+              <button class="auth-btn signup-btn">Đăng Ký</button>
+              <button class="auth-btn login-btn">Đăng Nhập</button>
             </div>
             <div id="user-email"></div>
             <div class="user-menu">
@@ -161,17 +161,25 @@
           <!-- Today's Biggest Hits Section -->
           <section class="hits-section">
             <div class="section-header">
-              <h2 class="section-heading">Today's biggest hits</h2>
+              <h2 class="section-heading">Nhạc Đề Xuất Hôm Nay</h2>
             </div>
             <div class="hits-grid">
               <!-- Hits grid item -->
             </div>
           </section>
-
+          <!-- Today's Playlists Hits Section -->
+          <section class="playlists-section">
+            <div class="section-header">
+              <h2 class="section-heading">Những Playlist Đáng Nghe</h2>
+            </div>
+            <div class="playlists-grid">
+              <!-- Hits grid item -->
+            </div>
+          </section>
           <!-- Popular Artists Section -->
           <section class="artists-section">
             <div class="section-header">
-              <h2 class="section-heading">Popular artists</h2>
+              <h2 class="section-heading">Nghệ Sĩ Được Nghe Nhiều</h2>
             </div>
             <div class="artists-grid"></div>
           </section>
@@ -348,59 +356,59 @@
 
           <!-- Sign Up Form -->
           <div class="auth-form" id="signupForm">
-            <h1 class="modal-heading">Sign up to start listening</h1>
+            <h1 class="modal-heading">Đăng ký ngay để tận hưởng âm nhạc</h1>
 
             <form class="auth-form-content">
               <div class="form-group">
                 <input
                   type="email"
-                  placeholder="Email address"
+                  placeholder="Địa chỉ email"
                   class="form-input"
                   id="signupEmail"
                 />
                 <div class="error-message">
                   <i class="fas fa-info-circle"></i>
-                  <span>Please enter a valid email address</span>
+                  <span>Vui lòng nhập đúng định dạng email.</span>
                 </div>
               </div>
 
               <div class="form-group">
                 <input
                   type="password"
-                  placeholder="Password"
+                  placeholder="Mật khẩu"
                   class="form-input"
                   id="signupPassword"
                 />
                 <div class="error-message">
                   <i class="fas fa-info-circle"></i>
-                  <span>Password must be at least 8 characters</span>
+                  <span>Mật khẩu phải có ít nhất 8 ký tự</span>
                 </div>
               </div>
 
-              <button type="submit" class="auth-submit-btn">Sign Up</button>
+              <button type="submit" class="auth-submit-btn">Đăng Ký</button>
             </form>
 
             <div class="auth-switch">
-              <span>Already have an account? </span>
-              <button class="auth-link" id="showLogin">Log in here</button>
+              <span>Bạn đã có tài khoản? </span>
+              <button class="auth-link" id="showLogin">Đăng nhập ngay</button>
             </div>
           </div>
 
           <!-- Login Form -->
           <div class="auth-form" id="loginForm" style="display: none">
-            <h1 class="modal-heading">Log in to Spotify</h1>
+            <h1 class="modal-heading">Đăng nhập Spotify</h1>
 
             <form class="auth-form-content">
               <div class="form-group">
                 <input
                   type="email"
-                  placeholder="Email address"
+                  placeholder="Địa chỉ Email"
                   class="form-input"
                   id="loginEmail"
                 />
                 <div class="error-message">
                   <i class="fas fa-info-circle"></i>
-                  <span>Please enter a valid email address</span>
+                  <span>Vui lòng nhập đúng định dạng Email</span>
                 </div>
               </div>
 
@@ -413,16 +421,16 @@
                 />
                 <div class="error-message">
                   <i class="fas fa-info-circle"></i>
-                  <span>Please enter your password</span>
+                  <span>Nhập mật khẩu của bạn</span>
                 </div>
               </div>
 
-              <button type="submit" class="auth-submit-btn">Log In</button>
+              <button type="submit" class="auth-submit-btn">Đăng Nhập</button>
             </form>
 
             <div class="auth-switch">
-              <span>Don't have an account? </span>
-              <button class="auth-link" id="showSignup">Sign up here</button>
+              <span>Bạn chưa có tài khoản? </span>
+              <button class="auth-link" id="showSignup">Đăng Ký Ngay</button>
             </div>
           </div>
         </div>

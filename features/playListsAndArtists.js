@@ -5,9 +5,11 @@ import { formatNumber, formatDuration } from "../utils/formatNumber.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const { playlists } = await httpRequest.get(endpoints.playlists);
+    const { tracks } = await httpRequest.get(endpoints.tracks);
     const { artists } = await httpRequest.get(endpoints.popularArtirst);
+    const { playlists } = await httpRequest.get(endpoints.playlists);
 
+    renderTracks(tracks);
     renderPlaylists(playlists);
     renderPopularArtists(artists);
   } catch (error) {
@@ -28,9 +30,7 @@ function escapeHTML(str = "") {
 function pickImage(url) {
   if (!url) return "./placeholder.svg";
   const u = new URL(url);
-  return u.origin !== "https://example.com/playlist-cover.jpg"
-    ? url
-    : "./placeholder.svg";
+  return u.origin !== "https://example.com" ? url : "./placeholder.svg";
   // try {
   //   // new URL sẽ throw nếu url không hợp lệ/
   //   const u = new URL(url);
@@ -41,26 +41,26 @@ function pickImage(url) {
   //   return "./placeholder.svg";
   // }
 }
-// hàm renderPlaylists
-function renderPlaylists(playlists) {
+// hàm rendertracks
+function renderTracks(tracks) {
   const hitsGrid = document.querySelector(".hits-grid");
-  const html = playlists
-    .map((playlist) => {
+  const html = tracks
+    .map((track) => {
       return `
-        <div class="hit-card" data-id="${escapeHTML(playlist.id)}">
+        <div class="hit-card" data-id="${escapeHTML(track.id)}">
           <div class="hit-card-cover" ">
             <img
-              src="${pickImage(playlist.image_url)}"
+              src="${pickImage(track.image_url)}"
               alt="Cover"
             />
             <button class="hit-play-btn"><i class="fas fa-play"></i></button>
           </div>
           <div class="hit-card-info ">
             <h3 class="hit-card-title">${escapeHTML(
-              playlist.name ?? "Untitled"
+              track.title ?? "Untitled"
             )}</h3>
             <p class="hit-card-artist">${escapeHTML(
-              playlist.user_display_name ?? "Unnamed"
+              track.artist_name ?? "Unnamed"
             )}</p>
           </div>
         </div>
@@ -96,6 +96,37 @@ function renderPopularArtists(artists) {
     .join("");
   artistsGrid.innerHTML = html;
 }
+
+// hàm Render Playlist
+function renderPlaylists(playlists) {
+  const playListsGrid = document.querySelector(".playlists-grid");
+  const html = playlists
+    .map((playlist) => {
+      return `
+        <div class="playlist-card" data-id="${escapeHTML(playlist.id)}">
+          <div class="playlist-card-cover">
+            <img
+              src="${pickImage(playlist.image_url)}"
+              alt="Cover"
+            />
+            <button class="playlist-play-btn"><i class="fas fa-play"></i></button>
+          </div>
+          <div class="playlist-card-info">
+            <h3 class="playlist-card-title">${escapeHTML(
+              playlist.name ?? "Untitled"
+            )}</h3>
+            <p class="playlist-card-artist">${escapeHTML(
+              playlist.user_display_name ?? playlist.user_username ?? "Unnamed"
+            )}</p>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  playListsGrid.innerHTML = html;
+}
+
 //hàm handleArtist - xử lý khi người dùng click vào một artist----------------------------------------
 
 export function handleArtist() {
@@ -158,6 +189,9 @@ function hideHomeSections() {
   // Ẩn section Popular artists
   const artistsSection = document.querySelector(".artists-section");
   if (artistsSection) artistsSection.style.display = "none";
+  // Ẩn section Playlist
+  const playlistsSection = document.querySelector(".playlists-section");
+  if (playlistsSection) playlistsSection.style.display = "none";
 }
 
 function showArtistDetail(artist) {
@@ -168,7 +202,6 @@ function showArtistDetail(artist) {
   const formattedListeners = formatNumber(listeners) + " monthly listeners";
 
   // Lấy hình ảnh nghệ sĩ
-  const heroImage = artist.images?.[0]?.url || "placeholder.svg";
   contentWrapper.innerHTML = `
     <!-- Artist Hero Section -->
       <section class="artist-hero">
@@ -252,14 +285,177 @@ function loadArtistTracks(artistId) {
       `;
     });
 }
-//hàm handlePlaylist - xử lý khi người dùng click vào một artist----------------------------------------
-export function handlePlaylist() {
-  // Lắng nghe click vào card playlist
+//hàm handleTracks - xử lý khi người dùng click vào một tracks----------------------------------------
+// Click vào bản nhạc đề xuất (".hit-card") -> mở chi tiết track
+export function handleTracks() {
   document.addEventListener("click", (e) => {
     const card = e.target.closest(".hit-card");
     if (!card) return;
+    const trackId = card.dataset.id || card.getAttribute("data-id");
+    if (trackId) loadTrackDetail(trackId);
+  });
+}
+
+function loadTrackDetail(trackId) {
+  const contentWrapper = document.querySelector(".content-wrapper");
+  contentWrapper.innerHTML = `
+    <div class="content-loading"><div class="spinner"></div></div>
+  `;
+
+  httpRequest
+    .get(endpoints.trackById(trackId))
+    .then((track) => {
+      hideHomeSections(); // tái dùng
+      showTrackDetail(track); // render UI chi tiết
+
+      // Thêm class .show sau khi DOM đã có
+      const hero = contentWrapper.querySelector(".artist-hero");
+      const controls = contentWrapper.querySelector(".artist-controls");
+      const rec = contentWrapper.querySelector(".popular-section");
+      hero?.classList.add("show");
+      controls?.classList.add("show");
+      rec?.classList.add("show");
+
+      // tải gợi ý theo track hiện tại
+      loadRecommendedTracks();
+    })
+    .catch((error) => {
+      console.error("Lỗi khi tải track:", error);
+      showToast("Không thể tải bài hát", "error");
+      contentWrapper.innerHTML = `
+        <div class="error-state">
+          <p>Không thể tải bài hát</p>
+          <button onclick="window.location.reload()">Thử lại</button>
+        </div>
+      `;
+    });
+}
+
+function showTrackDetail(track) {
+  const contentWrapper = document.querySelector(".content-wrapper");
+
+  const title = track?.title ?? track?.name ?? "Untitled";
+  const img = pickImage(track.artist_image_url);
+
+  const durationMs =
+    Number(
+      track?.duration_ms ??
+        (track?.duration != null ? track.duration * 1000 : 0)
+    ) || 0;
+
+  const plays = Number(track?.play_count) || 0;
+
+  const artistNames = Array.isArray(track?.artists)
+    ? track.artists
+        .map((a) => a?.name)
+        .filter(Boolean)
+        .join(", ")
+    : track?.artist_name ?? "Unknown Artist";
+
+  contentWrapper.innerHTML = `
+    <!-- Tái dùng class để ăn chung CSS -->
+    <section class="artist-hero">
+      <div class="hero-background">
+        <img src="${img}" alt="${escapeHTML(
+    title
+  )} background" class="hero-image" />
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <h1 class="artist-name">${escapeHTML(title)}</h1>
+        <p class="monthly-listeners">${escapeHTML(artistNames)}</p>
+        <p class="monthly-listeners">
+          ${formatNumber(plays)} Lượt nghe · ${formatDuration(durationMs)}
+        </p>
+      </div>
+    </section>
+
+    <section class="artist-controls">
+      <button class="play-btn-large" aria-label="Play">
+        <i class="fas fa-play"></i>
+      </button>
+      <!--nút Save -->
+      <button class="track-save-btn" data-id="${escapeHTML(track.id)}">
+        Save
+      </button>
+    </section>
+
+    <section class="popular-section" id="recommended-tracks">
+      <h2 class="section-title">Recommended</h2>
+      <div class="loading">Loading tracks...</div>
+    </section>
+  `;
+}
+function loadRecommendedTracks() {
+  httpRequest
+    .get(endpoints.trendingTracks())
+    .then((data) => {
+      const container = document.querySelector("#recommended-tracks");
+
+      const tracks = data?.tracks;
+
+      if (!tracks || tracks.length === 0) {
+        container.innerHTML = `
+          <h2 class="section-title">Recommended</h2>
+          <p>Chưa có gợi ý cho bài hát này.</p>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <h2 class="section-title">Có thể bạn sẽ thích</h2>
+        <div class="track-list"></div>
+      `;
+      const list = container.querySelector(".track-list");
+
+      const ui = tracks
+        .map((t, i) => {
+          const tTitle = t?.title;
+          const tImg = pickImage(t?.album_cover_image_url);
+          const tPlays = Number(t?.play_count) || 0;
+          const tDurMs = Number(t.duration * 1000) || 0;
+
+          return `
+            <div class="track-item hit-card" data-id="${escapeHTML(t.id)}">
+              <div class="track-number">${i + 1}</div>
+              <div class="track-image">
+                <img src="${tImg}" alt="${escapeHTML(tTitle)}" />
+              </div>
+              <div class="track-info">
+                <div class="track-name">${escapeHTML(tTitle)}</div>
+              </div>
+              <div class="track-plays">${formatNumber(tPlays)}</div>
+              <div class="track-duration">${formatDuration(tDurMs)}</div>
+              <button class="track-menu-btn" aria-label="More options">
+                <i class="fas fa-ellipsis-h"></i>
+              </button>
+            </div>
+          `;
+        })
+        .join("");
+
+      list.innerHTML = ui;
+    })
+    .catch((error) => {
+      console.error("Lỗi khi tải recommended:", error);
+      const el = document.querySelector("#recommended-tracks");
+      if (el) {
+        el.innerHTML = `
+          <h2 class="section-title">Recommended</h2>
+          <p>Failed to load recommendations</p>
+        `;
+      }
+    });
+}
+//hàm handlePlaylist - xử lý khi người dùng click vào một tracks----------------------------------------
+export function handlePlaylist() {
+  // Lắng nghe click vào card playlist
+  document.addEventListener("click", (e) => {
+    const card = e.target.closest(".playlist-card");
+    if (!card) return;
 
     const playlistId = card.dataset.id;
+    console.log(playlistId);
 
     if (playlistId) loadPlaylistDetail(playlistId);
   });

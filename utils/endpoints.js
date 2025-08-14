@@ -1,5 +1,6 @@
 const endpoints = {
-  playlists: "playlists",
+  playlists: "playlists?limit=7",
+  tracks: "tracks/trending?limit=7",
   authLogin: "auth/login",
   authRegister: "auth/register",
   authLogout: "auth/logout",
@@ -10,6 +11,10 @@ const endpoints = {
 
   playlistById: (id) => `playlists/${encodeURIComponent(id)}`,
   playlistTracks: (id) => `playlists/${encodeURIComponent(id)}/tracks`,
+
+  trackById: (id) => `tracks/${encodeURIComponent(id)}`,
+  trendingTracks: (limit = 5, offset = 0) =>
+    `tracks/trending?limit=${limit}&offset=${offset}`,
 };
 
 export { endpoints };

@@ -5,6 +5,7 @@ import { startRegister } from "./features/signUp.js";
 import { handleLogout } from "./features/logout.js";
 import {
   handleArtist,
+  handleTracks,
   handlePlaylist,
 } from "./features/playListsAndArtists.js";
 
@@ -99,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
   startLogin();
   //Xử lý click vào nghệ sĩ thì hiện ra thông tin
   handleArtist();
+  handleTracks();
   handlePlaylist();
 });
 
