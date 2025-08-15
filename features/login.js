@@ -1,6 +1,7 @@
 import { showToast } from "../utils/toast.js";
 import httpRequest from "../utils/httpRequest.js";
 import { endpoints } from "../utils/endpoints.js";
+import { refreshLibraryContent } from "../features/flAndUnflPlaylist.js";
 
 // Hàm kiểm tra định dạng email
 function isValidEmail(email) {
@@ -138,7 +139,7 @@ export function startLogin() {
 
         // Hiển thị thông báo thành công
         showToast("Đăng nhập thành công! Chào mừng trở lại.", "success");
-
+        refreshLibraryContent();
         // Cập nhật UI - tự động đăng nhập
         setTimeout(() => {
           updateCurrentUser(user);

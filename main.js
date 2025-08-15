@@ -12,7 +12,7 @@ import {
   handlePlaylistFollowToggle,
   refreshLibraryContent,
 } from "./features/flAndUnflPlaylist.js";
-
+import { initCreatePlaylist } from "./features/createPlaylist.js";
 // Auth Modal Functionality
 document.addEventListener("DOMContentLoaded", function () {
   // Get DOM elements
@@ -108,6 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
   handlePlaylist();
   refreshLibraryContent();
   handlePlaylistFollowToggle();
+  initCreatePlaylist();
 });
 
 // User Menu Dropdown Functionality
