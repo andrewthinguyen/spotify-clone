@@ -64,17 +64,16 @@ export function initCreatePlaylist() {
           // Cập nhật UI
           const img1 = editor.querySelector(".cp-cover img");
           if (img1) img1.src = imageUrl;
-          const img2 = editor.querySelector(".cp-dialog img");
+          const img2 = editor.querySelector(".cp-dialog-cover img");
           if (img2) img2.src = imageUrl;
         } catch (err) {
           console.error(err);
-          // showToast(err.message || 'Upload thất bại'); // nếu bạn có toast
         } finally {
-          e.target.value = ""; // để lần sau chọn lại cùng file vẫn trigger onchange
+          e.target.value = "";
         }
       };
 
-      // 5) Sửa tên/mô tả qua dialog -> PUT update
+      // Sửa tên/mô tả qua dialog -> PUT update
       const titleEl = editor.querySelector(".cp-title");
       const dialogEl = editor.querySelector("#cpEditDialog");
       const saveBtn = editor.querySelector("#cpSaveEdit");

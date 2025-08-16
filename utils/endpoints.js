@@ -35,7 +35,7 @@ const endpoints = {
   updatePlaylist: (id) => `playlists/${id}`,
   getMyPlaylists: (limit = 50, offset = 0) =>
     `me/playlists?limit=${limit}&offset=${offset}`,
-  uploadPlaylistCover: (id) => `upload/playlist/${playlist.id}/cover`,
+  uploadPlaylistCover: (id) => `upload/playlist/${id}/cover`,
   serveUploaded: (type, file) => `upload/serve/${type}/${file}`,
 };
 
