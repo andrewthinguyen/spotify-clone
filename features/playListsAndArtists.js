@@ -203,6 +203,21 @@ function showArtistDetail(artist) {
             <button class="play-btn-large">
               <i class="fas fa-play"></i>
             </button>
+             <button
+          class="artist-follow-btn ${
+            artist?.is_following ? "is-following" : ""
+          }"
+          data-id="${escapeHTML(artist?.id)}"
+          data-following="${artist?.is_following ? "1" : "0"}"
+          data-busy="0"
+          aria-pressed="${artist?.is_following ? "true" : "false"}"
+          aria-label="${
+            artist?.is_following ? "Unfollow artist" : "Follow artist"
+          }"
+          title="${artist?.is_following ? "Unfollow" : "Follow"}"
+        >
+          ${artist?.is_following ? "Unfollow" : "Follow"}
+        </button>
     </section>
     <section class="popular-section">
        </section>
@@ -424,7 +439,7 @@ function loadRecommendedTracks() {
       }
     });
 }
-//hàm handlePlaylist - xử lý khi người dùng click vào một tracks----------------------------------------
+//hàm handlePlaylist - xử lý khi người dùng click vào một playlist----------------------------------------
 export function handlePlaylist() {
   // Lắng nghe click vào card playlist
   document.addEventListener("click", (e) => {

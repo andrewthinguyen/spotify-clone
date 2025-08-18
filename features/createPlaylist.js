@@ -3,6 +3,7 @@ import { endpoints } from "../utils/endpoints.js";
 import { showToast } from "../utils/toast.js";
 import httpRequest from "../utils/httpRequest.js";
 import { uploadPlaylistCoverAndUpdate } from "../utils/uploadUtil.js";
+import { refreshLibraryContent } from "./flAndUnflPlaylist.js";
 
 export function initCreatePlaylist() {
   const createBtn = document.querySelector(".create-btn");
@@ -47,6 +48,9 @@ export function initCreatePlaylist() {
       // Đổ dữ liệu trả về
       fillPlaylistInfo(editor, playlist);
 
+      // 👉 cập nhật sidebar lần 1
+      refreshLibraryContent();
+
       // Click ảnh -> chọn file -> upload cover -> PUT update
       const coverEl = editor.querySelector(".cp-cover");
       coverEl?.addEventListener("click", () => fileInput.click());
@@ -72,6 +76,8 @@ export function initCreatePlaylist() {
           e.target.value = "";
         }
       };
+      // 👉 cập nhật sidebar lần 2
+      refreshLibraryContent();
 
       // Sửa tên/mô tả qua dialog -> PUT update
       const titleEl = editor.querySelector(".cp-title");
@@ -101,6 +107,9 @@ export function initCreatePlaylist() {
 
             const t = editor.querySelector(".cp-title");
             if (t) t.textContent = name || "My Playlist";
+            // 👉 cập nhật sidebar lần 3
+            refreshLibraryContent();
+
             dialogEl.close();
           } catch (err) {
             console.error(err);

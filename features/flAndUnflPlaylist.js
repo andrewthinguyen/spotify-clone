@@ -77,47 +77,88 @@ async function onFollowToggleClick(e) {
     btn.dataset.busy = "0";
   }
 }
-// load danh sách playpist ở sidebar bên trái
+//Load sidebar bên trái bao gồm cả myplaylist và followed playlist
 export async function refreshLibraryContent() {
   const container = document.querySelector(".library-content");
   if (!container) return;
 
   const token = getAuthToken();
+  const headers = { Authorization: `Bearer ${token}` };
 
-  if (!token) {
-    // chưa đăng nhập thì để nguyên giao diện hiện có
-    return;
-  }
+  if (!token) return;
 
   try {
-    const res = await httpRequest.get(endpoints.followedPlaylists(), {
-      headers: { Authorization: `Bearer ${token}` },
+    //dùng promise.all vì nếu tạo playlist hoặc đi follow playlist mà gặp lỗi thì đều nên báo là tạo không thành công
+    //từ đó có thể xử lý cho người dùng, tránh trường hợp 1 cái dùng được và hệ thống hiển thị sai.
+    const [createdRes, followedRes, artistFollowed] = await Promise.all([
+      httpRequest.get(endpoints.getMyPlaylists(), { headers }),
+      httpRequest.get(endpoints.followedPlaylists(), { headers }),
+      httpRequest.get(endpoints.followedArtists(), { headers }),
+    ]);
+    const toArr = (res) =>
+      Array.isArray(res)
+        ? res
+        : Array.isArray(res?.items)
+        ? res.items
+        : Array.isArray(res?.playlists)
+        ? res.playlists
+        : Array.isArray(res?.artists)
+        ? res.artists
+        : [];
+    const created = toArr(createdRes);
+    const followed = toArr(followedRes);
+    const artists = toArr(artistFollowed);
+
+    // helper lấy timestamp (ms) từ followed_at/created_at/save_at
+    const getTS = (pl) => {
+      const ts =
+        Date.parse(pl?.followed_at || "") ||
+        Date.parse(pl?.saved_at || "") ||
+        Date.parse(pl?.updated_at || "");
+
+      return Number.isFinite(ts) ? ts : 0;
+    };
+
+    // gộp & khử trùng: giữ bản có thời gian mới hơn
+    const map = new Map();
+    [...created, ...followed, ...artists].forEach((pl) => {
+      if (!pl || !pl.id) return;
+      const old = map.get(pl.id);
+      if (!old || getTS(pl) >= getTS(old))
+        map.set(pl.id, pl, pl.followed_at, pl.saved_at);
     });
 
-    const playlists = Array.isArray(res) ? res : res?.playlists ?? [];
+    //sort lên đầu cái mới nhất
+    const MAX_SIDEBAR_ITEMS = 10;
+    const playlistsSorted = Array.from(map.values()).sort(
+      (a, b) => getTS(b) - getTS(a)
+    );
+    const playlists = playlistsSorted.slice(0, MAX_SIDEBAR_ITEMS);
 
+    // render
     const html = playlists
       .map((pl) => {
         const name = pl?.name ?? "Untitled";
         const img = pickImage(pl?.image_url);
+        const id = pl?.id ?? "";
         return `
-          <div class="library-item" data-id="${escapeHTML(pl.id)}">
-            <img
-              src="${img}"
-              alt="${escapeHTML(name)}"
-              class="item-image"
-            />
-            <div class="item-info">
-              <div class="item-title">${escapeHTML(name)}</div>
-              <div class="item-subtitle">Playlist</div>
-            </div>
+        <div class="library-item" data-id="${escapeHTML(id)}" data-kind="${
+          pl.followed_at ? "artist" : "playlist"
+        }">
+          <img src="${img}" alt="${escapeHTML(name)}" class="item-image" />
+          <div class="item-info">
+            <div class="item-title">${escapeHTML(name)}</div>
+            <div class="item-subtitle">${
+              pl.followed_at ? "Artist" : "Playlist"
+            }</div>
           </div>
-        `;
+        </div>
+      `;
       })
       .join("");
 
     container.innerHTML = html || `<p class="empty">No playlists</p>`;
   } catch (err) {
-    console.error("Load my playlists failed:", err);
+    console.error("Load playlists failed:", err);
   }
 }

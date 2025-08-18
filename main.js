@@ -13,6 +13,9 @@ import {
   refreshLibraryContent,
 } from "./features/flAndUnflPlaylist.js";
 import { initCreatePlaylist } from "./features/createPlaylist.js";
+import { handleArtistFollowToggle } from "./features/flAndUnflArtist.js";
+import { initSidebarContextMenu } from "./features/sidebarContextMenu.js";
+
 // Auth Modal Functionality
 document.addEventListener("DOMContentLoaded", function () {
   // Get DOM elements
@@ -108,7 +111,9 @@ document.addEventListener("DOMContentLoaded", function () {
   handlePlaylist();
   refreshLibraryContent();
   handlePlaylistFollowToggle();
+  handleArtistFollowToggle();
   initCreatePlaylist();
+  initSidebarContextMenu();
 });
 
 // User Menu Dropdown Functionality

@@ -407,7 +407,7 @@
   font-weight: 600;
 }
 
-/* Css cho phần follow và unfollow */
+/* Css cho phần follow và unfollow paylist */
 .playlist-follow-btn {
   margin-left: 12px;
   padding: 20px 20px;
@@ -432,7 +432,31 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
-
+/* Css cho phần follow và unfollow artist*/
+.artist-follow-btn {
+  margin-left: 12px;
+  padding: 20px 20px;
+  border-radius: 50%;
+  border: 1px solid var(--border, #333);
+  background: var(--text-primary);
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.1s ease;
+  font-size: 15px;
+  font-style: inherit;
+  font-weight: 600;
+}
+.artist-follow-btn.is-following {
+  background: var(--primary, #1db954);
+  color: #fff;
+  border-color: transparent;
+}
+.artist-follow-btn:active {
+  transform: scale(0.98);
+}
+.artist-follow-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 /* Artist Controls */
 .artist-controls {
   display: none;

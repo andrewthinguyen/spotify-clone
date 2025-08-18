@@ -22,21 +22,25 @@ const endpoints = {
   trendingTracks: (limit = 5, offset = 0) =>
     `tracks/trending?limit=${limit}&offset=${offset}`,
 
-  //phần folllow và unfollow
+  //phần folllow và unfollow playlist
 
   followPlaylist: (id) => `playlists/${encodeURIComponent(id)}/follow`,
   unfollowPlaylist: (id) => `playlists/${encodeURIComponent(id)}/follow`,
 
-  followedPlaylists: (limit = 20, offset = 0) =>
-    `me/playlists/followed?limit=${limit}&offset=${offset}`,
+  followedPlaylists: () => `me/playlists/followed`,
 
+  //phần folllow và unfollow artist
+  followArtist: (id) => `artists/${encodeURIComponent(id)}/follow`,
+  unfollowArtist: (id) => `artists/${encodeURIComponent(id)}/follow`,
+
+  followedArtists: () => `me/following?limit=20&offset=0`,
   //Phần tạo playlist
   createPlaylist: () => "playlists",
   updatePlaylist: (id) => `playlists/${id}`,
-  getMyPlaylists: (limit = 50, offset = 0) =>
-    `me/playlists?limit=${limit}&offset=${offset}`,
+  getMyPlaylists: () => `me/playlists`,
   uploadPlaylistCover: (id) => `upload/playlist/${id}/cover`,
   serveUploaded: (type, file) => `upload/serve/${type}/${file}`,
+  deletePlaylist: (id) => `playlists/${encodeURIComponent(id)}`,
 };
 
 export { endpoints };
