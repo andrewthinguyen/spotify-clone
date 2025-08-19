@@ -1,0 +1,72 @@
+/* sidebar-context-menu.css */
+:root {
+  --ctx-bg: #181818;
+  --ctx-border: #2a2a2a;
+  --ctx-text: #fff;
+  --ctx-hover: #222;
+  --ctx-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --ctx-radius: 8px;
+  --ctx-minw: 200px;
+  --ctx-focus: 2px solid #ffffffaa;
+}
+
+#sidebar-ctx-menu.context-menu {
+  position: fixed;
+  z-index: 9999;
+  display: none; /* JS sẽ bật/tắt */
+  min-width: var(--ctx-minw);
+  background: var(--ctx-bg);
+  color: var(--ctx-text);
+  border: 1px solid var(--ctx-border);
+  border-radius: var(--ctx-radius);
+  box-shadow: var(--ctx-shadow);
+  overflow: hidden;
+  user-select: none;
+  animation: ctx-fade-in 0.12s ease-out;
+}
+
+@keyframes ctx-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#sidebar-ctx-menu .ctx-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: none;
+  border: 0;
+  color: var(--ctx-text);
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#sidebar-ctx-menu .ctx-item:hover {
+  background: var(--ctx-hover);
+}
+
+#sidebar-ctx-menu .ctx-item:focus-visible {
+  outline: var(--ctx-focus);
+  outline-offset: -2px;
+  position: relative;
+  z-index: 1;
+}
+
+#sidebar-ctx-menu .ctx-item[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #sidebar-ctx-menu {
+    animation: none;
+  }
+}

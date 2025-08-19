@@ -44,6 +44,6 @@ export function handleLogout() {
       if (userMenu) userMenu.classList.remove("show");
 
       // Chuyển về trang chủ
-      window.location.href = "/";
+      window.location.href = "./";
     });
 }

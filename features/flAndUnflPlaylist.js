@@ -143,13 +143,17 @@ export async function refreshLibraryContent() {
         const id = pl?.id ?? "";
         return `
         <div class="library-item" data-id="${escapeHTML(id)}" data-kind="${
-          pl.followed_at ? "artist" : "playlist"
+          pl.followed_at ? "artist" : pl.saved_at ? "flPlaylist" : "playlist"
         }">
           <img src="${img}" alt="${escapeHTML(name)}" class="item-image" />
           <div class="item-info">
             <div class="item-title">${escapeHTML(name)}</div>
             <div class="item-subtitle">${
-              pl.followed_at ? "Artist" : "Playlist"
+              pl.followed_at
+                ? "Ca sĩ"
+                : pl.saved_at
+                ? "Playlist bạn Follow"
+                : "Playlist mà bạn tạo"
             }</div>
           </div>
         </div>
