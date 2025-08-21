@@ -242,12 +242,12 @@ function loadArtistTracks(artistId) {
             <h2 class="section-title">Popular</h2>
             <div class="track-list">`;
       const uiTrack = songs
-        .map((track) => {
+        .map((track, i) => {
           const plays = Number(track.play_count) || 0;
           const durationMs = Number(track.duration) || 0;
           return `
               <div class="track-item">
-        <div class="track-number">${escapeHTML(track.track_number)}</div>
+        <div class="track-number">${i + 1}</div>
         <div class="track-image">
           <img
             src="${pickImage(track.image_url)}"
@@ -363,13 +363,12 @@ function showTrackDetail(track) {
     </section>
 
     <section class="artist-controls">
-      <button class="play-btn-large" aria-label="Play">
+      <button class="play-btn-large" data-id="${escapeHTML(
+        track.id
+      )}" aria-label="Play">
         <i class="fas fa-play"></i>
       </button>
-      <!--nút Save -->
-      <button class="track-save-btn" data-id="${escapeHTML(track.id)}">
-        Save
-      </button>
+    
     </section>
 
     <section class="popular-section" id="recommended-tracks">

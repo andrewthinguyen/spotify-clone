@@ -41,6 +41,10 @@ const endpoints = {
   uploadPlaylistCover: (id) => `upload/playlist/${id}/cover`,
   serveUploaded: (type, file) => `upload/serve/${type}/${file}`,
   deletePlaylist: (id) => `playlists/${encodeURIComponent(id)}`,
+
+  //Phần phát nhạc:
+  playTrack: (id) => `tracks/${encodeURIComponent(id)}/play`,
+  completeTrack: (id) => `tracks/${encodeURIComponent(id)}/complete`,
 };
 
 export { endpoints };

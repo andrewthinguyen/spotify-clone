@@ -432,6 +432,12 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+.track-item.active {
+  background: rgba(255, 255, 255, 0.06);
+}
+.track-item.active .title {
+  color: #1db954;
+}
 /* Css cho phần follow và unfollow artist*/
 .artist-follow-btn {
   margin-left: 12px;

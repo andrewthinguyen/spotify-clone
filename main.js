@@ -15,6 +15,9 @@ import {
 import { initCreatePlaylist } from "./features/createPlaylist.js";
 import { handleArtistFollowToggle } from "./features/flAndUnflArtist.js";
 import { initSidebarContextMenu } from "./features/sidebarContextMenu.js";
+import "./features/player.js"; // lõi phát nhạc
+import "./features/artist-page.js"; // logic trang ca sĩ
+import "./features/ui-bottom-bar.js";
 
 // Auth Modal Functionality
 document.addEventListener("DOMContentLoaded", function () {
