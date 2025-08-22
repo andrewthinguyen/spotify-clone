@@ -51,13 +51,6 @@ function getQueueIds() {
   } catch (e) {
     console.error(e);
   }
-
-  //   // Bấm nút play to -> phát ngay (không gọi API lại nếu đã preload)
-  //   bigPlay.addEventListener("click", async () => {
-  //     if (player.hasSrc()) {
-  //       player.play();
-  //     } else await player.playById(mainId);
-  //   });
 })();
 
 // Click 1 bài trong "Có thể bạn sẽ thích" -> phát bài đó

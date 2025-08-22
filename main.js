@@ -18,6 +18,8 @@ import { initSidebarContextMenu } from "./features/sidebarContextMenu.js";
 import "./features/player.js"; // lõi phát nhạc
 import "./features/artist-page.js"; // logic trang ca sĩ
 import "./features/ui-bottom-bar.js";
+import "./features/library-tabs.js";
+import { initLibrarySort } from "./features/library-sort-simple.js";
 
 // Auth Modal Functionality
 document.addEventListener("DOMContentLoaded", function () {
@@ -117,6 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
   handleArtistFollowToggle();
   initCreatePlaylist();
   initSidebarContextMenu();
+  initLibrarySort();
 });
 
 // User Menu Dropdown Functionality

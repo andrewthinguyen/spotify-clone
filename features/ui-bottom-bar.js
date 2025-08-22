@@ -4,7 +4,7 @@ import player from "./player.js";
 (function initBottomBar() {
   const $center = document.querySelector(".player-center");
   if (!$center) {
-    // Trang không có thanh điều khiển -> thoát gọn
+    // Trang không có thanh điều khiển -> thoát
     return;
   }
   ///

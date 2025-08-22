@@ -129,7 +129,7 @@ export async function refreshLibraryContent() {
     });
 
     //sort lên đầu cái mới nhất
-    const MAX_SIDEBAR_ITEMS = 10;
+    const MAX_SIDEBAR_ITEMS = 20;
     const playlistsSorted = Array.from(map.values()).sort(
       (a, b) => getTS(b) - getTS(a)
     );
@@ -144,7 +144,9 @@ export async function refreshLibraryContent() {
         return `
         <div class="library-item" data-id="${escapeHTML(id)}" data-kind="${
           pl.followed_at ? "artist" : pl.saved_at ? "flPlaylist" : "playlist"
-        }">
+        }" data-name="${pl.name}" data-created-at="${
+          pl.created_at
+        }" data-updated-at="${pl.updated_at}" >
           <img src="${img}" alt="${escapeHTML(name)}" class="item-image" />
           <div class="item-info">
             <div class="item-title">${escapeHTML(name)}</div>

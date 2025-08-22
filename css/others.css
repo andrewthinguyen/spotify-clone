@@ -1,0 +1,83 @@
+/* đảm bảo menu bám đúng vị trí bên cạnh nút Sort */
+.search-library {
+  position: relative;
+}
+
+/* popup sort nhỏ gọn */
+.lib-sort-menu {
+  position: absolute;
+  right: 0; /* sát cạnh phải nút */
+  top: 120%;
+  z-index: 50;
+
+  width: max-content; /* thu theo nội dung */
+  min-width: 160px; /* đủ chứa "Recently Added" */
+  max-width: 220px;
+
+  padding: 6px; /* compact */
+  border-radius: 10px;
+  background: #2a2a2a;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* nếu dùng toggle bằng class .hidden */
+.lib-sort-menu.hidden {
+  display: none;
+}
+
+/* mục trong menu */
+.lib-sort-menu .mi {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px; /* nhỏ gọn hơn */
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 13px; /* nhỏ xíu cho đỡ to */
+  line-height: 1.2;
+  border-radius: 6px;
+  white-space: nowrap; /* không xuống dòng */
+}
+
+/* hover */
+.lib-sort-menu .mi:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* dấu tick căn về phải */
+.lib-sort-menu .mi.is-selected::after {
+  content: "✓";
+  margin-left: auto;
+  opacity: 0.9;
+  font-size: 12px;
+}
+
+/* mũi tên nhỏ*/
+.lib-sort-menu::before {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: -6px;
+  width: 10px;
+  height: 10px;
+  background: #2a2a2a;
+  transform: rotate(45deg);
+  box-shadow: -2px -2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* rất nhỏ màn hình -> thu thêm chút */
+@media (max-width: 380px) {
+  .lib-sort-menu {
+    min-width: 140px;
+  }
+  .lib-sort-menu .mi {
+    padding: 6px 8px;
+    font-size: 12.5px;
+  }
+}
