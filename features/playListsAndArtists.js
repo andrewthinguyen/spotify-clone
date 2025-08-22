@@ -111,7 +111,7 @@ export function handleArtist() {
   document.addEventListener("click", function (e) {
     const artistCard = e.target
       .closest(".artist-card")
-      .querySelector(".artist-card-info");
+      ?.querySelector(".artist-card-info");
     if (!artistCard) return;
 
     const artistId = artistCard.dataset.id;

@@ -29,14 +29,11 @@ class SimplePlayer {
   }
 
   async _fetchStreamUrl(id) {
-    const token = getAuthToken?.();
-    const res = await httpRequest.post(
-      endpoints.playTrack(id),
-      {},
-      { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) } }
-    );
+    // const token = getAuthToken?.();
+    const res = await httpRequest.get(endpoints.trackById(id));
+    console.log(res);
 
-    const url = res.track.audio_url;
+    const url = res.audio_url;
 
     if (!url) throw new Error("Không nhận được stream URL từ API /play");
     return url;
