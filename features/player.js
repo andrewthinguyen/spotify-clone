@@ -10,6 +10,7 @@ class SimplePlayer {
     this.queue = []; // mảng id
     this.index = -1;
     this.shuffle = false;
+    this.current = null;
 
     // thời gian
     this.audio.addEventListener("timeupdate", () => {
@@ -31,18 +32,30 @@ class SimplePlayer {
   async _fetchStreamUrl(id) {
     // const token = getAuthToken?.();
     const res = await httpRequest.get(endpoints.trackById(id));
-    console.log(res);
 
     const url = res.audio_url;
 
     if (!url) throw new Error("Không nhận được stream URL từ API /play");
     return url;
   }
+  async _fetchTrack(id) {
+    const res = await httpRequest.get(endpoints.trackById(id));
+    const track = res;
+    if (!track.title || !track.image_url || !track.artist_name) {
+      throw new Error("Không nhận được thông tin từ API /tracks/:id");
+    }
+    return track;
+  }
 
   async preloadById(id) {
     const url = await this._fetchStreamUrl(id);
+    const track = await this._fetchTrack(id);
     this.audio.src = url;
     this.audio.currentTime = 0;
+    this.current = track;
+    window.dispatchEvent(
+      new CustomEvent("player:trackchange", { detail: { track } })
+    );
   }
 
   async playById(id) {

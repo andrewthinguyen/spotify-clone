@@ -19,6 +19,7 @@ import "./features/player.js"; // lõi phát nhạc
 import "./features/artist-page.js"; // logic trang ca sĩ
 import "./features/ui-bottom-bar.js";
 import "./features/library-tabs.js";
+import "./features/ui-nowplaying.js";
 import { initLibrarySort } from "./features/library-sort-simple.js";
 
 // Auth Modal Functionality

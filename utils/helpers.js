@@ -18,16 +18,16 @@ export function escapeHTML(str = "") {
 
 //xử lý để nếu đường dẫn ảnh không phải tới f8team thì coi như false, tránh bị xấu giao diện.
 export function pickImage(url) {
-  if (!url) return "./placeholder.svg";
-  const u = new URL(url);
-  return u.origin !== "https://example.com" ? url : "./placeholder.svg";
-  // try {
-  //   // new URL sẽ throw nếu url không hợp lệ/
-  //   const u = new URL(url);
-  //   return u.origin !== "https://example.com/playlist-cover.jpg"
-  //     ? url
-  //     : "./placeholder.svg";
-  // } catch {
-  //   return "./placeholder.svg";
-  // }
+  // if (!url) return "./placeholder.svg";
+  // const u = new URL(url);
+  // return u.origin !== "https://example.com" ? url : "./placeholder.svg";
+  try {
+    // new URL sẽ throw nếu url không hợp lệ/
+    const u = new URL(url);
+    return u.origin !== "https://example.com/playlist-cover.jpg"
+      ? url
+      : "./placeholder.svg";
+  } catch {
+    return "./placeholder.svg";
+  }
 }

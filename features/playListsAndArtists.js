@@ -288,7 +288,7 @@ export function handleTracks() {
   });
 }
 
-function loadTrackDetail(trackId) {
+export function loadTrackDetail(trackId) {
   const contentWrapper = document.querySelector(".content-wrapper");
   contentWrapper.innerHTML = `
     <div class="content-loading"><div class="spinner"></div></div>
@@ -309,7 +309,7 @@ function loadTrackDetail(trackId) {
       rec?.classList.add("show");
 
       // tải gợi ý theo track hiện tại
-      loadRecommendedTracks();
+      loadRecommendedTracks(track.artist_id);
     })
     .catch((error) => {
       console.error("Lỗi khi tải track:", error);
@@ -353,7 +353,7 @@ function showTrackDetail(track) {
   )} background" class="hero-image" />
         <div class="hero-overlay"></div>
       </div>
-      <div class="hero-content">
+      <div class="hero-content" data-artist-id="${track.artist_id}">
         <h1 class="artist-name">${escapeHTML(title)}</h1>
         <p class="monthly-listeners">${escapeHTML(artistNames)}</p>
         <p class="monthly-listeners">
@@ -377,9 +377,9 @@ function showTrackDetail(track) {
     </section>
   `;
 }
-function loadRecommendedTracks() {
+function loadRecommendedTracks(track_artist_id) {
   httpRequest
-    .get(endpoints.trendingTracks())
+    .get(endpoints.popularTracks(track_artist_id))
     .then((data) => {
       const container = document.querySelector("#recommended-tracks");
 
@@ -402,7 +402,7 @@ function loadRecommendedTracks() {
       const ui = tracks
         .map((t, i) => {
           const tTitle = t?.title;
-          const tImg = pickImage(t?.album_cover_image_url);
+          const tImg = pickImage(t?.image_url);
           const tPlays = Number(t?.play_count) || 0;
           const tDurMs = Number(t.duration * 1000) || 0;
 
