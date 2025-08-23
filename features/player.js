@@ -29,15 +29,15 @@ class SimplePlayer {
     return !!this.audio.src;
   }
 
-  async _fetchStreamUrl(id) {
-    // const token = getAuthToken?.();
-    const res = await httpRequest.get(endpoints.trackById(id));
+  // async _fetchStreamUrl(id) {
+  //   // const token = getAuthToken?.();
+  //   const res = await httpRequest.get(endpoints.trackById(id));
 
-    const url = res.audio_url;
+  //   const url = res.audio_url;
 
-    if (!url) throw new Error("Không nhận được stream URL từ API /play");
-    return url;
-  }
+  //   if (!url) throw new Error("Không nhận được stream URL từ API /play");
+  //   return url;
+  // }
   async _fetchTrack(id) {
     const res = await httpRequest.get(endpoints.trackById(id));
     const track = res;
@@ -48,9 +48,8 @@ class SimplePlayer {
   }
 
   async preloadById(id) {
-    const url = await this._fetchStreamUrl(id);
     const track = await this._fetchTrack(id);
-    this.audio.src = url;
+    this.audio.src = track.audio_url;
     this.audio.currentTime = 0;
     this.current = track;
     window.dispatchEvent(
