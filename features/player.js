@@ -52,7 +52,7 @@ class SimplePlayer {
     this.audio.src = track.audio_url;
     this.audio.currentTime = 0;
     this.current = track;
-    window.dispatchEvent(
+    document.dispatchEvent(
       new CustomEvent("player:trackchange", { detail: { track } })
     );
   }

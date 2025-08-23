@@ -26,7 +26,7 @@ if (left) {
   }
 
   // 1) Lắng nghe khi player phát bài mới
-  window.addEventListener("player:trackchange", (e) => {
+  document.addEventListener("player:trackchange", (e) => {
     renderNowPlaying(e.detail.track);
   });
 
