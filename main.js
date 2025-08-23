@@ -22,6 +22,7 @@ import "./features/library-tabs.js";
 import "./features/ui-nowplaying.js";
 import { initLibrarySort } from "./features/library-sort-simple.js";
 import { initLibraryOpenBridge } from "./features/library-open-bridge.js";
+import { initVolume } from "./features/ui-volume-simple.js";
 
 // Auth Modal Functionality
 document.addEventListener("DOMContentLoaded", function () {
@@ -123,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initSidebarContextMenu();
   initLibrarySort();
   initLibraryOpenBridge();
+  initVolume();
 });
 
 // User Menu Dropdown Functionality
