@@ -1,5 +1,5 @@
 // features/library-open-bridge.js
-// Bridge: click library-item -> mở Artist/Playlist bằng hàm bạn đã có.
+
 import { loadArtistDetail, loadPlaylistDetail } from "./playListsAndArtists.js";
 export function initLibraryOpenBridge() {
   const container = document.querySelector(".library-content");
