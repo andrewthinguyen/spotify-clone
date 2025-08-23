@@ -121,7 +121,7 @@ export function handleArtist() {
     }
   });
 }
-function loadArtistDetail(artistId) {
+export function loadArtistDetail(artistId) {
   const contentWrapper = document.querySelector(".content-wrapper");
 
   // Hiển thị trạng thái loading
@@ -449,7 +449,7 @@ export function handlePlaylist() {
   });
 }
 //hàm loadPlaylistDetail
-function loadPlaylistDetail(playlistId) {
+export function loadPlaylistDetail(playlistId) {
   const contentWrapper = document.querySelector(".content-wrapper");
   contentWrapper.innerHTML = `
     <div class="content-loading"><div class="spinner"></div></div>

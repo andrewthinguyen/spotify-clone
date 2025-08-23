@@ -21,6 +21,7 @@ import "./features/ui-bottom-bar.js";
 import "./features/library-tabs.js";
 import "./features/ui-nowplaying.js";
 import { initLibrarySort } from "./features/library-sort-simple.js";
+import { initLibraryOpenBridge } from "./features/library-open-bridge.js";
 
 // Auth Modal Functionality
 document.addEventListener("DOMContentLoaded", function () {
@@ -121,6 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initCreatePlaylist();
   initSidebarContextMenu();
   initLibrarySort();
+  initLibraryOpenBridge();
 });
 
 // User Menu Dropdown Functionality
