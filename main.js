@@ -223,20 +223,26 @@ document.addEventListener("DOMContentLoaded", function () {
   checkAuthStatus();
 });
 //mắt xem mật khẩu:
-const passwordInput = document.querySelector("#signupPassword");
-const toggleBtn = document.querySelector(".password-show");
+function showPassword(p, s) {
+  const passwordInput = document.querySelector(p);
 
-toggleBtn.addEventListener("click", () => {
-  const isPassword = passwordInput.getAttribute("type") === "password";
+  const toggleBtn = document.querySelector(s);
 
-  // Chuyển đổi giữa text và password
-  passwordInput.setAttribute("type", isPassword ? "text" : "password");
+  toggleBtn.addEventListener("click", () => {
+    const isPassword = passwordInput.getAttribute("type") === "password";
 
-  // Đổi icon cho trực quan
-  toggleBtn.innerHTML = isPassword
-    ? '<i class="fas fa-eye-slash"></i>'
-    : '<i class="fas fa-eye"></i>';
-});
+    // Chuyển đổi giữa text và password
+    passwordInput.setAttribute("type", isPassword ? "text" : "password");
+
+    // Đổi icon cho trực quan
+    toggleBtn.innerHTML = isPassword
+      ? '<i class="fas fa-eye-slash"></i>'
+      : '<i class="fas fa-eye"></i>';
+  });
+}
+
+showPassword("#signupPassword", ".password-show");
+showPassword("#loginPassword", ".password-show-2");
 
 //Tính năng tìm kiếm ở đầu trang
 const searchBox = document.querySelector(".search-input");
