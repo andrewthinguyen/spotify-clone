@@ -222,3 +222,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   checkAuthStatus();
 });
+//mắt xem mật khẩu:
+const passwordInput = document.querySelector("#signupPassword");
+const toggleBtn = document.querySelector(".password-show");
+
+toggleBtn.addEventListener("click", () => {
+  const isPassword = passwordInput.getAttribute("type") === "password";
+
+  // Chuyển đổi giữa text và password
+  passwordInput.setAttribute("type", isPassword ? "text" : "password");
+
+  // Đổi icon cho trực quan
+  toggleBtn.innerHTML = isPassword
+    ? '<i class="fas fa-eye-slash"></i>'
+    : '<i class="fas fa-eye"></i>';
+});

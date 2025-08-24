@@ -81,3 +81,11 @@
     font-size: 12.5px;
   }
 }
+#password-auth {
+  position: relative;
+}
+.password-show {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+}
