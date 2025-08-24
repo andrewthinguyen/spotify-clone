@@ -237,3 +237,24 @@ toggleBtn.addEventListener("click", () => {
     ? '<i class="fas fa-eye-slash"></i>'
     : '<i class="fas fa-eye"></i>';
 });
+
+//Tính năng tìm kiếm ở đầu trang
+const searchBox = document.querySelector(".search-input");
+
+// Lắng nghe khi user gõ
+searchBox.addEventListener("input", () => {
+  const keyword = searchBox.value.toLowerCase();
+  const cards = document.querySelectorAll(
+    ".hit-card, .playlist-card, .artist-card"
+  );
+  cards.forEach((card) => {
+    const text = card.textContent.toLowerCase();
+
+    // Nếu text trong card có chứa keyword thì hiện, không thì ẩn
+    if (text.includes(keyword)) {
+      card.style.display = "";
+    } else {
+      card.style.display = "none";
+    }
+  });
+});
